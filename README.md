@@ -104,9 +104,9 @@ invoices
 ls <path of the directory?> default to pwd
 ```
 
--a to show hidden files
--l long listing
--h human readable
+- -a to show hidden files
+- -l long listing
+- -h human readable
 
 
 ### Permissions
