@@ -242,3 +242,44 @@ We use the `>>` operator to append content.
 ```sh
 touch filename # create an empty file
 ```
+
+## Session 03 - Homework
+1. Create the following directory structure + files using the minimum possible number of commands
+for the following stock categories: `Grocery`, `Linen`, `Fruits`, using the below example as a template
+
+```
+stock
+ |_____ Grocery
+        |_____ 2010
+        |       |_____ m1
+        |       |      |_____ invoice1.txt
+        |       |      |_____ invoice2.txt
+        |       |      |_____ invoice3.txt
+        |       |      |_____ ...
+        |       |      |_____ invoice100.txt
+        |       |_____ ...
+        |       |_____ m12
+        |
+        |_____ 2011
+        |       |_____ m1
+        |       |      |_____ invoice1.txt
+        |       |      |_____ invoice2.txt
+        |       |      |_____ invoice3.txt
+        |       |      |_____ ...
+        |       |      |_____ invoice100.txt
+        |       |_____ ...
+        |       |_____ m12
+        |
+        |_____ ...
+        |_____ 2020
+                |_____ m1
+                |      |_____ invoice1.txt
+                |      |_____ invoice2.txt
+                |      |_____ invoice3.txt
+                |      |_____ ...
+                |      |_____ invoice100.txt
+                |_____ ...
+                |_____ m12
+```
+
+2. What is the difference between Hard and Soft links in linux
