@@ -283,3 +283,99 @@ stock
 ```
 
 2. What is the difference between Hard and Soft links in linux
+
+## Regex
+- select all years
+- select all Proper Name
+- select all words with 3 characters length
+- select all words that are between 2 and 5 length
+- select all words that are greater than 2
+- select all words that are shorter than 5
+- select the sequence that match a Capital Letter + many lower case character and end with a number
+- select the words (the,this,that,those)
+
+
+## Grep
+grep -l -r hello *
+grep -l -r hello students employees salaries.cs
+
+grep -l -r hello */*
+grep -l -r hello students/english students/linux  employees/managers employees/hr
+
+grep -l -r hello */*/*
+grep -l -r hello students/english/2010 students/english/2011 students/linux/2010 students/linux/2011  ....
+
+/students
+	- english
+		- 2010
+		- 2011
+	- linux
+		- 2010
+		- 2011
+
+/employees
+	- managers
+		- 2010
+		- 2011
+
+	- hr
+		- 2010
+		- 2011
+/salaries.cs
+
+
+Search for "public" in the current directory and all subdirectories for files ending with "*.cs"
+```sh
+grep -r "public" **/*
+```
+
+## Exercise
+```sh
+wget ahmadmoussawi.com/users.txt
+```
+
+- display all file names that contains the word "hello" or "Hello"
+```sh
+grep -li "hello" *
+```
+- display all file names that contains the word "hello" or "Hello" in the current directory and all subdirectories
+
+```sh
+grep -lir "hello" .
+```
+- display all file names that contains the word "hello" or "Hello" in the `/home` directory and all subdirectories
+
+- display all file names that contains the word "hello" or "Hello" that ends with ".html"
+```sh
+grep -li "hello" *.html
+```
+
+- display all file names that contains the word "hello" or "Hello" that ends with ".txt" and starts with capital A
+
+- find all file names with the count, that contains the word "the"
+```sh
+grep -lc "the" *
+```
+
+- in the file users.txt, find all lines that contains "ne" in their name
+```sh
+grep "ne" users.txt
+```
+
+- in the file users.txt, find all lines that not contains "ne" in their names
+```sh
+grep -v "ne" users.txt
+```
+
+- in the file users.txt, find all lines that starts with a word that matches the following rule: Capital Letter, many lower case letter, number
+
+```sh
+grep -E -w "[A-Z][a-z]+[0-9]" users.txt
+egrep -w "[A-Z][a-z]+[0-9]" users.txt
+```
+
+- in the file users.txt, the lines that starts with a Capital Letter
+
+- in the file users.txt, the lines that ends with a voyel.
+
+
