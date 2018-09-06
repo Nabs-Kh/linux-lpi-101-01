@@ -345,12 +345,20 @@ grep -lir "hello" .
 ```
 - display all file names that contains the word "hello" or "Hello" in the `/home` directory and all subdirectories
 
+```sh
+grep -lir "hello" /home
+```
+
 - display all file names that contains the word "hello" or "Hello" that ends with ".html"
 ```sh
 grep -li "hello" *.html
 ```
 
 - display all file names that contains the word "hello" or "Hello" that ends with ".txt" and starts with capital A
+
+```sh
+grep -li "hello" A*.txt
+```
 
 - find all file names with the count, that contains the word "the"
 ```sh
@@ -374,8 +382,53 @@ grep -E -w "[A-Z][a-z]+[0-9]" users.txt
 egrep -w "[A-Z][a-z]+[0-9]" users.txt
 ```
 
-- in the file users.txt, the lines that starts with a Capital Letter
+- in the file users.txt, find the lines that starts with a Capital Letter
+```sh
+grep "^[A-Z]" users.txt
+```
 
 - in the file users.txt, the lines that ends with a voyel.
+```sh
+grep -i "[aeuio]$" users.txt
+```
+
+## SED command
+### replace
+```sh
+sed 'lines s/expression/replace/flags' filename
+```
+1. Wrap all words starting with a Capital letter with brackets, i.e. Formatech => [Formatech]
+
+2. Replace all numbers in line 5 and above with three dashes "---"
+
+3. Replace all numbers in line 2 and above with three dashes "---" for the 2nd occurrence only
+
+4. Remove all words that ends with "is" from the file
+
+5. Wrap all words with 2 characters length at the beginning of the line with two dots ".."
+
+6. Remove all numbers from the file starting from the line 5
+
+7. Replace all the occurrences of the word "hate" with "love"
+
+8. Replace all plural words with the singular form in the whole file
+
+9. Replace all words that starts with a capital letter with the lower case form.
+
+
+## Examples
+Get the current IP address
+```sh
+# 1st method
+ip a | grep -w "inet" | awk '{print $2}' | grep -v "^127" | sed -E 's/\/[0-9]+//'
+
+# 2nd method
+ip a | grep -w "inet" | awk '{print $2}' | grep -v "^127" | cut -d "/" -f 1
+
+# 3rd method
+ip a | egrep "\b[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\b" | awk '{print $2}' | cut -d "/" -f 1 | sed 1d
+```
+
+
 
 
