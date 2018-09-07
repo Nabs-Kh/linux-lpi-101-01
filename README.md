@@ -399,9 +399,9 @@ sed 'lines s/expression/replace/flags' filename
 ```
 1. Wrap all words starting with a Capital letter with brackets, i.e. Formatech => [Formatech]
 
-2. Replace all numbers in line 5 and above with three dashes "---"
+2. Replace all numbers in line 5 and above (5,6,9 ...) with three dashes "---"
 
-3. Replace all numbers in line 2 and above with three dashes "---" for the 2nd occurrence only
+3. Replace all numbers in line 2 and above (2,3,4 ...) with three dashes "---" for the 2nd occurrence only
 
 4. Remove all words that ends with "is" from the file
 
@@ -411,13 +411,21 @@ sed 'lines s/expression/replace/flags' filename
 
 7. Replace all the occurrences of the word "hate" with "love"
 
-8. Replace all plural words with the singular form in the whole file
+8. Replace all plural words with the singular form in the whole file (assuming that plurals are the words that ends with "s")
 
-9. Replace all words that starts with a capital letter with the lower case form.
+9. Replace all words that starts with a capital "W" with the lower case form.
+
+10. Remove all empty lines from the file
+
+11. Remove the spaces (indentation) from the beginning of each line of the file
+
+12. Add dots "." to the end of the lines
+
+
 
 
 ## Examples
-Get the current IP address
+Write a command (or a series of commands) to get the current ip address knowing that `ip a` print the current network information
 ```sh
 # 1st method
 ip a | grep -w "inet" | awk '{print $2}' | grep -v "^127" | sed -E 's/\/[0-9]+//'
@@ -427,6 +435,11 @@ ip a | grep -w "inet" | awk '{print $2}' | grep -v "^127" | cut -d "/" -f 1
 
 # 3rd method
 ip a | egrep "\b[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\b" | awk '{print $2}' | cut -d "/" -f 1 | sed 1d
+
+# 4th method
+ip a | egrep -o "\b[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\b" | grep -v "^127" | grep -v "255$
+
+
 ```
 
 
