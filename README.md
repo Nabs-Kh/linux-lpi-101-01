@@ -493,6 +493,10 @@ ip a | egrep -o "\b[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\b" | grep -v "^127" | grep -v 
 
 ```
 
+## Find homework
+in a given path, add the `execute` permission for all directories, and remove the `write` and `execute` permission from the group for all files that have the "*.csv" extension and are between 2k and 5M and modified in the last 30 days
+
+
 
 
 
@@ -501,4 +505,4 @@ ip a | egrep -o "\b[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\b" | grep -v "^127" | grep -v 
 - list the running processes
 - change process priorities
 - command nesting
-
+- df and du
