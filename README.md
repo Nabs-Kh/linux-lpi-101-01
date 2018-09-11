@@ -398,28 +398,80 @@ grep -i "[aeuio]$" users.txt
 sed 'lines s/expression/replace/flags' filename
 ```
 1. Wrap all words starting with a Capital letter with brackets, i.e. Formatech => [Formatech]
+```sh
+sed -E 's/([A-Z]\\w+)/[\1]/g' text2
+# note: \w means all characters and underscores
+\w: ([A-Z]|[a-z]|_)
+```
+
 
 2. Replace all numbers in line 5 and above (5,6,9 ...) with three dashes "---"
 
+```sh
+sed -E '5,$ s/([0-9]+)/---/g' text2
+```
+
 3. Replace all numbers in line 2 and above (2,3,4 ...) with three dashes "---" for the 2nd occurrence only
 
+```sh
+sed -E '2,$ s/([0-9]+)/---/2' text2
+```
 4. Remove all words that ends with "is" from the file
 
+```sh
+sed -E 's/\b\w+is\b//g' text2 # only words that ends with "is" excluding the word "is"
+sed -E 's/\b\w*is\b//g' text2 # only words that ends with "is" including the word "is"
+```
+
 5. Wrap all words with 2 characters length at the beginning of the line with two dots ".."
+```sh
+sed -E 's/^\w{2}\b/../' text2
+```
 
 6. Remove all numbers from the file starting from the line 5
 
+```sh
+sed -E '5,$ s/\d+//g' text2
+```
+
 7. Replace all the occurrences of the word "hate" with "love"
 
+```sh
+sed -E 's/hate/love/g'
+```
+
 8. Replace all plural words with the singular form in the whole file (assuming that plurals are the words that ends with "s")
+```sh
+sed -E 's/\b(\w+)s\b/\1/g' text2
+```
 
 9. Replace all words that starts with a capital "W" with the lower case form.
 
+```sh
+sed -E 's/\bW(\w+)\b/w\1/g' text2
+```
+
 10. Remove all empty lines from the file
 
-11. Remove the spaces (indentation) from the beginning of each line of the file
+```sh
+sed -E '/^$/ d' text2
 
-12. Add dots "." to the end of the lines
+#note
+d means delete the line
+^$ matches empty lines
+```
+
+11. Remove the spaces (indentation) from the beginning of each line of the file
+```sh
+sed -E 's/^\s+//' text2
+```
+
+12. Add semicolon ";" to the end of the lines
+```sh
+sed -E 's/(.)$/\1;/' text2
+
+note the dot means any character
+```
 
 
 
@@ -439,9 +491,14 @@ ip a | egrep "\b[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\b" | awk '{print $2}' | cut -d "/
 # 4th method
 ip a | egrep -o "\b[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\b" | grep -v "^127" | grep -v "255$
 
-
 ```
 
 
 
+
+##
+- find files and folders
+- list the running processes
+- change process priorities
+- command nesting
 
