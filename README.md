@@ -6,7 +6,6 @@ root user: the user named root (the batal 💪🏻)
 home directory: the home directory for each user, `/home/<username>` and `/root` for root user
 
 
-
 ## Session 2
 ==========
 
@@ -496,13 +495,98 @@ ip a | egrep -o "\b[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\b" | grep -v "^127" | grep -v 
 ## Find homework
 in a given path, add the `execute` permission for all directories, and remove the `write` and `execute` permission from the group for all files that have the "*.csv" extension and are between 2k and 5M and modified in the last 30 days
 
-
-
-
-
 ##
 - find files and folders
 - list the running processes
 - change process priorities
 - command nesting
 - df and du
+
+## Boot Process
+The boot process consist of the following steps:
+
+1. BIOS
+2. MBR (Master Boot Record)
+3. GRUB (Currently the latest version is GRUB2)
+4. Linux Kernel
+5. Init process (the latest versions uses the Systemd)
+6. Run Levels (the latest versions uses Targets instead of Run Levels)
+
+## Switching to different Run Level
+One way to use this is to enter to the *Rescue Mode* or *Emergency Mode*, for example in CentOs the default run levels are:
+0 — Halt
+1 — Single-user text mode
+2 — Not used (user-definable)
+3 — Full multi-user text mode
+4 — Not used (user-definable)
+5 — Full multi-user graphical mode (with an X-based login screen)
+6 — Reboot
+
+We can switch to another level using the `init` command
+
+```sh
+init 0 # this will shutdown the PC
+init 1 # Enter to the rescue mode and logoff all other users
+init 6 # Restart the PC
+```
+
+To check the current run level we can use the `runlevel` command
+
+```sh
+$> runlevel
+1 3
+```
+this command will display the previous and current run level, so for instance the system was in rescue mode (note the 1) and the current state is 3 (Full multi-user text mode)
+
+## GRUB
+this utility helps us to manage and configure the boot process of our linux, by default in CentOs 7 we have two menu entry one for the default kernel and the second is for the rescue kernel (a lite version of the linux kernel)
+
+![Grub2](centos7_grub2.png)
+
+We can manage the menu entries, for example adding our own menu entry that loads a customized version of the kernel (disable all usb drivers).
+
+Grub configuration is located at `/boot/grub2/grub.cfg`
+
+```
+
+### BEGIN /etc/grub.d/10_linux ###
+menuentry 'CentOS Linux (3.10.0-862.el7.x86_64) 7 (Core)' --class centos --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-3.10.0-862.el7.x86_64-advanced-85e91aab-80ef-45aa-b74b-4fcb20fd26f3' {
+	load_video
+	set gfxpayload=keep
+	insmod gzio
+	insmod part_msdos
+	insmod xfs
+	set root='hd0,msdos1'
+	if [ x$feature_platform_search_hint = xy ]; then
+	  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,msdos1 --hint-efi=hd0,msdos1 --hint-baremetal=ahci0,msdos1 --hint='hd0,msdos1'  3a114b2b-ce10-447e-8492-f53096a54dc8
+	else
+	  search --no-floppy --fs-uuid --set=root 3a114b2b-ce10-447e-8492-f53096a54dc8
+	fi
+	linux16 /vmlinuz-3.10.0-862.el7.x86_64 root=/dev/mapper/centos-root ro crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet
+	initrd16 /initramfs-3.10.0-862.el7.x86_64.img
+}
+menuentry 'CentOS Linux (0-rescue-19b0aa881ecf4ff4a9df328f570d1cae) 7 (Core)' --class centos --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-0-rescue-19b0aa881ecf4ff4a9df328f570d1cae-advanced-85e91aab-80ef-45aa-b74b-4fcb20fd26f3' {
+	load_video
+	insmod gzio
+	insmod part_msdos
+	insmod xfs
+	set root='hd0,msdos1'
+	if [ x$feature_platform_search_hint = xy ]; then
+	  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,msdos1 --hint-efi=hd0,msdos1 --hint-baremetal=ahci0,msdos1 --hint='hd0,msdos1'  3a114b2b-ce10-447e-8492-f53096a54dc8
+	else
+	  search --no-floppy --fs-uuid --set=root 3a114b2b-ce10-447e-8492-f53096a54dc8
+	fi
+	linux16 /vmlinuz-0-rescue-19b0aa881ecf4ff4a9df328f570d1cae root=/dev/mapper/centos-root ro crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet
+	initrd16 /initramfs-0-rescue-19b0aa881ecf4ff4a9df328f570d1cae.img
+}
+```
+
+for example this is the section that add the menu entries, we can add another entry or modify an existing one.
+
+> **Note:** We should not edit this file directly instead we edit the files under `/etc/grub.d/` and `/etc/default/grub`
+
+We use the command `grub2-mkconfig -o /boot/grub2/grub.cfg` to regenerate the config file
+
+To set a password for the GRUB boot, so the kernel cannot be loaded without a password, we can use the `grub2-set-password` command.
+
+> **Note:** The recent versions of linux uses **systemd** instead of legacy **init**, **Targets** instead of **Run Levels**, so be aware when reading the book, some of the sections are not applicable.
